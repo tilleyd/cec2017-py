@@ -11,6 +11,12 @@ def bent_cigar(x):
     sm *= 10e6
     return x[0]*x[0] + sm
 
+def sum_diff_pow(x):
+    sm = 0.0
+    for i in range(0, len(x)):
+        sm += (abs(x[i])) ** (i+1)
+    return sm
+
 def zakharov(x):
     sms = 0.0
     sm = 0.0
@@ -253,6 +259,7 @@ def schaffers_f7(x):
 
 all_functions = [
     bent_cigar,
+    sum_diff_pow,
     zakharov,
     rosenbrock,
     rastrigin,
