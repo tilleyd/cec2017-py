@@ -60,8 +60,8 @@ def f11(x, rotation=None, shift=None, shuffle=None):
     x_parts = _shuffle_and_partition(x_transformed, shuffle, [0.2, 0.4, 0.4])
 
     y = basic.zakharov(x_parts[0])
-    y += basic.rosenbrock(0.02048 * x_parts[1])
-    y += basic.rastrigin(0.0512 * x_parts[2])
+    y += basic.rosenbrock(x_parts[1])
+    y += basic.rastrigin(x_parts[2])
     return y + 1100.0
 
 def f12(x, rotation=None, shift=None, shuffle=None):
@@ -89,7 +89,7 @@ def f12(x, rotation=None, shift=None, shuffle=None):
     x_parts = _shuffle_and_partition(x_transformed, shuffle, [0.3, 0.3, 0.4])
 
     y = basic.high_conditioned_elliptic(x_parts[0])
-    y += basic.modified_schwefel(10.0 * x_parts[1])
+    y += basic.modified_schwefel(x_parts[1])
     y += basic.bent_cigar(x_parts[2])
     return y + 1200.0
 
@@ -118,8 +118,8 @@ def f13(x, rotation=None, shift=None, shuffle=None):
     x_parts = _shuffle_and_partition(x_transformed, shuffle, [0.3, 0.3, 0.4])
 
     y = basic.bent_cigar(x_parts[0])
-    y += basic.rosenbrock(0.02048 * x_parts[1])
-    y += basic.lunacek_bi_rastrigin(6.0 * x_parts[2])
+    y += basic.rosenbrock(x_parts[1])
+    y += basic.lunacek_bi_rastrigin(x_parts[2])
     return y + 1300.0
 
 def f14(x, rotation=None, shift=None, shuffle=None):
@@ -148,8 +148,8 @@ def f14(x, rotation=None, shift=None, shuffle=None):
 
     y = basic.high_conditioned_elliptic(x_parts[0])
     y += basic.ackley(x_parts[1])
-    y += basic.schaffers_f7(0.005 * x_parts[2])
-    y += basic.rastrigin(0.0512 * x_parts[3])
+    y += basic.schaffers_f7(x_parts[2])
+    y += basic.rastrigin(x_parts[3])
     return y + 1400.0
 
 def f15(x, rotation=None, shift=None, shuffle=None):
@@ -177,9 +177,9 @@ def f15(x, rotation=None, shift=None, shuffle=None):
     x_parts = _shuffle_and_partition(x_transformed, shuffle, [0.2, 0.2, 0.3, 0.3])
 
     y = basic.bent_cigar(x_parts[0])
-    y += basic.h_g_bat(0.05 * x_parts[1])
-    y += basic.rastrigin(0.0512 * x_parts[2])
-    y += basic.rosenbrock(0.02048 * x_parts[3])
+    y += basic.h_g_bat(x_parts[1])
+    y += basic.rastrigin(x_parts[2])
+    y += basic.rosenbrock(x_parts[3])
     return y + 1500.0
 
 def f16(x, rotation=None, shift=None, shuffle=None):
@@ -207,9 +207,9 @@ def f16(x, rotation=None, shift=None, shuffle=None):
     x_parts = _shuffle_and_partition(x_transformed, shuffle, [0.2, 0.2, 0.3, 0.3])
 
     y = basic.expanded_schaffers_f6(x_parts[0])
-    y += basic.h_g_bat(0.05 * x_parts[1])
-    y += basic.rosenbrock(0.02048 * x_parts[2])
-    y += basic.modified_schwefel(10.0 * x_parts[3])
+    y += basic.h_g_bat(x_parts[1])
+    y += basic.rosenbrock(x_parts[2])
+    y += basic.modified_schwefel(x_parts[3])
     return y + 1600.0
 
 def f17(x, rotation=None, shift=None, shuffle=None):
@@ -236,11 +236,11 @@ def f17(x, rotation=None, shift=None, shuffle=None):
     x_transformed = np.matmul(rotation, x - shift)
     x_parts = _shuffle_and_partition(x_transformed, shuffle, [0.1, 0.2, 0.2, 0.2, 0.3])
 
-    y = basic.katsuura(0.05 * x_parts[0])
+    y = basic.katsuura(x_parts[0])
     y += basic.ackley(x_parts[1])
-    y += basic.expanded_griewanks_plus_rosenbrock(0.05 * x_parts[2])
-    y += basic.modified_schwefel(10.0 * x_parts[3])
-    y += basic.rastrigin(0.0512 * x_parts[4])
+    y += basic.expanded_griewanks_plus_rosenbrock(x_parts[2])
+    y += basic.modified_schwefel(x_parts[3])
+    y += basic.rastrigin(x_parts[4])
     return y + 1700.0
 
 def f18(x, rotation=None, shift=None, shuffle=None):
@@ -269,8 +269,8 @@ def f18(x, rotation=None, shift=None, shuffle=None):
 
     y = basic.high_conditioned_elliptic(x_parts[0])
     y += basic.ackley(x_parts[1])
-    y += basic.rastrigin(0.0512 * x_parts[2])
-    y += basic.h_g_bat(0.05 * x_parts[3])
+    y += basic.rastrigin(x_parts[2])
+    y += basic.h_g_bat(x_parts[3])
     y += basic.discus(x_parts[4])
     return y + 1800.0
 
@@ -299,9 +299,9 @@ def f19(x, rotation=None, shift=None, shuffle=None):
     x_parts = _shuffle_and_partition(x_transformed, shuffle, [0.2, 0.2, 0.2, 0.2, 0.2])
 
     y = basic.bent_cigar(x_parts[0])
-    y += basic.rastrigin(0.0512 * x_parts[1])
-    y += basic.expanded_griewanks_plus_rosenbrock(0.05 * x_parts[2])
-    y += basic.weierstrass(0.005 * x_parts[3])
+    y += basic.rastrigin(x_parts[1])
+    y += basic.expanded_griewanks_plus_rosenbrock(x_parts[2])
+    y += basic.weierstrass(x_parts[3])
     y += basic.expanded_schaffers_f6(x_parts[4])
     return y + 1900.0
 
@@ -330,9 +330,9 @@ def f20(x, rotation=None, shift=None, shuffle=None):
     x_parts = _shuffle_and_partition(x_transformed, shuffle, [0.1, 0.1, 0.2, 0.2, 0.2, 0.2])
 
     y = basic.happy_cat(x_parts[0])
-    y += basic.katsuura(0.05 * x_parts[1])
+    y += basic.katsuura(x_parts[1])
     y += basic.ackley(x_parts[2])
-    y += basic.rastrigin(0.0512 * x_parts[3])
-    y += basic.modified_schwefel(10.0 * x_parts[4])
-    y += basic.schaffers_f7(0.005 * x_parts[5])
+    y += basic.rastrigin(x_parts[3])
+    y += basic.modified_schwefel(x_parts[4])
+    y += basic.schaffers_f7(x_parts[5])
     return y + 2000.0

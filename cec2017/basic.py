@@ -165,10 +165,10 @@ def modified_schwefel(x):
     return 418.9829*nx - sm
 
 def high_conditioned_elliptic(x):
-    factor = 1 / (len(x) - 1)
+    factor = 6 / (len(x) - 1)
     sm = 0.0
     for i in range(0, len(x)):
-        sm += x[i]*x[i] * 10e+6**(i*factor)
+        sm += x[i]*x[i] * 10**(i*factor)
     return sm
 
 def discus(x):
@@ -188,6 +188,7 @@ def ackley(x):
     return -20*np.exp(-0.2*np.sqrt(inx*smsq)) - np.exp(inx*smcs) + 20 + np.e
 
 def weierstrass(x):
+    x = 0.005 * x
     k = np.arange(start=0, stop=21, step=1)
     ak = 0.5**k
     bk = np.pi * (3**k)
@@ -215,6 +216,7 @@ def griewank(x):
     return sm - pd + 1
 
 def katsuura(x):
+    x = 0.05 * x
     nx = len(x)
     pw = 10/(nx**1.2)
     prd = 1.0
@@ -230,6 +232,7 @@ def katsuura(x):
     return df*prd - df
 
 def happy_cat(x):
+    x = (0.05 * x) - 1
     nx = len(x)
     sm = 0.0
     smsq = 0.0
@@ -239,6 +242,7 @@ def happy_cat(x):
     return (abs(smsq - nx))**0.25 + (0.5*smsq + sm)/nx + 0.5
 
 def h_g_bat(x):
+    x = (0.05 * x) - 1
     nx = len(x)
     sm = 0.0
     smsq = 0.0
@@ -248,23 +252,19 @@ def h_g_bat(x):
     return (abs(smsq*smsq - sm*sm))**0.5 + (0.5*smsq + sm)/nx + 0.5
 
 def expanded_griewanks_plus_rosenbrock(x):
+    x = (0.05 * x) + 1
+
     sm = 0.0
-    for i in range(0, len(x) - 1):
-        # rosenbrok
-        t1 = x[i]*x[i] - x[i+1]
-        t1 = 100 * t1*t1
-        t2 = x[i] - 1
-        t2 = t2*t2
-        y = t1 + t2
-        # griewank
-        sm += y*y/4000 - np.cos(y) + 1
-    t1 = x[-1]*x[-1] - x[0]
-    t1 = 100 * t1*t1
-    t2 = x[-1] - 1
-    t2 = t2*t2
-    y = t1 + t2
-    sm += y*y/4000 - np.cos(y) + 1
-    return sm
+    for i in range(0, len(x)-1):
+        tmp1 = x[i]*x[i]-x[i+1]
+        tmp2 = x[i] - 1.0
+        temp = 100*tmp1*tmp1 + tmp2*tmp2
+        sm += (temp*temp)/4000.0 - np.cos(temp) + 1
+        tmp1 = x[-1]*x[-1] - x[0]
+        tmp2 = x[-1] - 1
+        temp = 100.0*tmp1*tmp1 + tmp2*tmp2
+        sm += (temp*temp)/4000.0 - np.cos(temp) + 1.0
+        return sm
 
 def schaffers_f7(x):
     nx = len(x)
