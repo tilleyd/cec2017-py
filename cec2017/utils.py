@@ -2,7 +2,7 @@
 # Author: Duncan Tilley
 # Additional functions for graphing and benchmarking
 
-def surface_plot(function, domain=(-100,100), points=30, dimension=2):
+def surface_plot(function, domain=(-100,100), points=30, dimension=2, ax=None):
     """
     Creates a surface plot of a function.
 
@@ -14,6 +14,8 @@ def surface_plot(function, domain=(-100,100), points=30, dimension=2):
         dimension (int): The dimension to pass to the function. If this is more
             than 2, the elements after the first 2 will simply be zero,
             providing a slice at x_3 = 0, ..., x_n = 0.
+        ax (matplotlib axes): Optional axes to use (must have projection='3d').
+            Note, if specified plt.show() will not be called.
     """
     from mpl_toolkits import mplot3d
     import matplotlib.pyplot as plt
@@ -34,19 +36,21 @@ def surface_plot(function, domain=(-100,100), points=30, dimension=2):
             zs[i] = function(xys[i])
 
     # create the plot
-    fig = plt.figure()
-    ax = plt.axes(projection="3d")
+    ax_in = ax
+    if ax is None:
+        ax = plt.axes(projection='3d')
 
     X = xys[:,0].reshape((points, points))
     Y = xys[:,1].reshape((points, points))
     Z = zs.reshape((points, points))
-    ax.plot_surface(X, Y, Z, cmap='winter', edgecolor='none')
+    ax.plot_surface(X, Y, Z, cmap='gist_ncar', edgecolor='none')
     ax.set_title(function.__name__)
     ax.set_xlabel('x')
     ax.set_ylabel('y')
     ax.set_zlabel('z')
 
-    plt.show()
+    if ax_in is None:
+        plt.show()
 
 def time(function, domain=(-100,100), points=30):
     """
