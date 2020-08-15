@@ -1,4 +1,4 @@
-# cec2017.basic
+# cec2017.hybrid
 # Author: Duncan Tilley
 # Hybrid function definitions, f11 to f20
 
@@ -336,3 +336,16 @@ def f20(x, rotation=None, shift=None, shuffle=None):
     y += basic.modified_schwefel(x_parts[4])
     y += basic.schaffers_f7(x_parts[5])
     return y + 2000.0
+
+all_functions = [
+    f11,
+    f12,
+    f13,
+    f14,
+    f15,
+    f16,
+    f17,
+    f18,
+    f19,
+    f20
+]

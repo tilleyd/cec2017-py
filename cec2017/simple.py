@@ -1,4 +1,4 @@
-# cec2017.basic
+# cec2017.simple
 # Author: Duncan Tilley
 # Simple function definitions, f1 to f10
 
@@ -200,3 +200,16 @@ def f10(x, rotation=None, shift=None):
         shift = transforms.shifts[9][:nx]
     x_transformed = np.matmul(rotation, (x - shift))
     return basic.modified_schwefel(x_transformed) + 1000.0
+
+all_functions = [
+    f1,
+    f2,
+    f3,
+    f4,
+    f5,
+    f6,
+    f7,
+    f8,
+    f9,
+    f10
+]
