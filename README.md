@@ -8,7 +8,7 @@ During the implementation of this module, a few differences between the problem 
 
 As per the problem definitions, functions are defined for 10, 30, 50 and 100 dimensions, with functions `f1` to `f10` and `f21` to `f28` also being defined for 2 and 20 dimensions. If you provide custom rotation matrices (and shuffles, where applicable) you can however use arbitrary dimensions. Below are some surface plots for functions `f1` to `f10` over 2 dimensions.
 
-![Function Surface Plots](https://raw.githubusercontent.com/tilleyd/cec2017-py/master/extra/plots.jpg)
+![Function Surface Plots](extra/plots.jpg)
 
 > \[1\] _Awad, N. H., Ali, M. Z., Suganthan, P. N., Liang, J. J., & Qu, B. Y. (2016). Problem Definitions and Evaluation Criteria for the CEC 2017 Special Session and Competition on Single Objective Bound Constrained Real-Parameter Numerical Optimization._
 
