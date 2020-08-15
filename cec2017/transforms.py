@@ -42,7 +42,7 @@ shifts = _pkl['shift']
 shifts_cf = _pkl['shift_cf']
 
 # Each has shape (10, N) containing N-dimensional permutations for functions f11
-# to f20
+# to f20 (note: the original were 1-indexed, these are 0-indexed)
 shuffles = {
     10: _pkl['shuffle_D10'],
     30: _pkl['shuffle_D30'],
@@ -51,7 +51,7 @@ shuffles = {
 }
 
 # Each has shape (2, 10, N) containing 10 N-dimensional permutations for
-# functions f29 and f30
+# functions f29 and f30 (note: the original were 1-indexed, these are 0-indexed)
 shuffles_compound = {
     10: _pkl['shuffle_cf_D10'],
     30: _pkl['shuffle_cf_D30'],

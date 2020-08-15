@@ -2,17 +2,18 @@
 # Author: Duncan Tilley
 # Additional functions for graphing and benchmarking
 
-def surface_plot(function, domain=(-100,100), points=30):
+def surface_plot(function, domain=(-100,100), points=30, dimension=2):
     """
     Creates a surface plot of a function.
 
-    function
-        The objective function to be called at each point.
-    domain
-        The inclusive (min, max) domain for each dimension.
-    points
-        The number of points to collect on each dimension. A total of points^2
-        function evaluations will be performed.
+    Args:
+        function (function): The objective function to be called at each point.
+        domain (num, num): The inclusive (min, max) domain for each dimension.
+        points (int): The number of points to collect on each dimension. A total
+            of points^2 function evaluations will be performed.
+        dimension (int): The dimension to pass to the function. If this is more
+            than 2, the elements after the first 2 will simply be zero,
+            providing a slice at x_3 = 0, ..., x_n = 0.
     """
     from mpl_toolkits import mplot3d
     import matplotlib.pyplot as plt
@@ -23,8 +24,14 @@ def surface_plot(function, domain=(-100,100), points=30):
     xys = np.transpose([np.tile(xys, len(xys)), np.repeat(xys, len(xys))])
     zs = np.zeros(points*points)
 
-    for i in range(0, xys.shape[0]):
-        zs[i] = function(xys[i])
+    if dimension > 2:
+        # concatenate remaining zeros
+        tail = np.zeros(dimension - 2)
+        for i in range(0, xys.shape[0]):
+            zs[i] = function(np.concatenate([xys[i], tail]))
+    else:
+        for i in range(0, xys.shape[0]):
+            zs[i] = function(xys[i])
 
     # create the plot
     fig = plt.figure()
