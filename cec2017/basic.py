@@ -22,12 +22,15 @@ def zakharov(x):
     sm = 0.0
     for i in range(0, len(x)):
         sms += x[i]*x[i]
-        sm += x[i]
+        # Note: the i+1 term is not in the CEC function definitions, but is
+        # in the code and in any definition you find online
+        sm += (i+1)*x[i]
     sm = 0.5 * sm
     sm = sm * sm
     return sms + sm + (sm * sm)
 
 def rosenbrock(x):
+    x = 0.02048 * x + 1.0
     sm = 0
     for i in range(0, len(x)-1):
         t1 = x[i]*x[i] - x[i+1]
@@ -38,6 +41,9 @@ def rosenbrock(x):
     return sm
 
 def rastrigin(x):
+    # Note: the 0.0512 shrinking is omitted in the problem definitions but is
+    # present in the provided code
+    x = 0.0512 * x
     tpi = 2.0 * np.pi
     sm = 0.0
     cs = np.cos(tpi*x)
@@ -56,77 +62,90 @@ def expanded_schaffers_f6(x):
         sm += 0.5 + t1/t2
     return sm
 
-def lunacek_bi_rastrigin(x, o=None):
-    if o == None:
-        o = np.zeros(x.shape)
-
-    x = (x - o) * 0.1 # calculate y
+def lunacek_bi_rastrigin(x, shift=None, rotation=None):
+    # a special case; we need the shift vector and rotation matrix
     nx = len(x)
-    s = 1.0 - 1.0 / (2.0*np.sqrt(nx+20) - 8.2)
-    mu0 = 2.5
-    mu1 = -np.sqrt((mu0*mu0-1)/s)
+    if shift is None:
+        shift = np.zeros(nx)
 
-    after = 0.0
-    t1 = 0.0
-    t2 = 0.0
+    # calculate the coefficients
+    mu0=2.5
+    tmpx = np.zeros(nx)
+    s = 1 - 1 / (2 * ((nx+20)**0.5) - 8.2)
+    mu1 = -((mu0*mu0-1)/s)**0.5
+
+    # shift and scale
+    y = 0.1 * (x - shift)
+
     for i in range(0, nx):
-        z = (-2 if o[i] < 0.0 else 2) * x[i]
-        after += np.cos(2.0*np.pi*z)
-        t1 += z*z
-        t = z + mu0 - mu1
-        t2 += t*t
+        tmpx[i] = 2*y[i]
+        if shift[i] < 0.0:
+            tmpx[i] *= -1.0
 
+    z = tmpx.copy()
+    tmpx = tmpx + mu0
+
+    t1=0.0
+    t2=0.0
+    for i in range(0, nx):
+        t = tmpx[i]-mu0
+        t1 += t*t
+        t = tmpx[i]-mu1
+        t2 += t*t
     t2 *= s
     t2 += nx
 
+    y = z if rotation is None else np.matmul(rotation, z)
+
+    t = 0.0
+    y = np.cos(2.0*np.pi*y)
+    for i in range(0, nx):
+        t += y[i]
+
     r = t1 if t1 < t2 else t2
+    return r + 10.0*(nx-t)
 
-    return r + 10.0*(nx-after)
+def non_cont_rastrigin(x, shift=None, rotation=None):
+    # a special case; we need the shift vector and rotation matrix
+    if shift is None:
+        shift = np.zeros(x.shape)
 
-def non_cont_rotated_rastrigin(x, o=None):
-    if o == None:
-        o = np.zeros(x.shape)
-
-    x = 0.0512*(x-o)
-
+    nx = len(x)
     sm = 0.0
-    for i in range(0, len(x)):
-        t = x[i] if abs(x[i]) <= 0.5 else round(2*x[i])*0.5
-        sm += t*t - 10*np.cos(2*np.pi*t) + 10
+    for i in range(0, nx):
+        if abs(x[i]-shift[i]) > 0.5:
+            x[i] = shift[i] + np.floor(2*(x[i]-shift[i])+0.5)/2
+
+    z = 0.0512 * (x - shift)
+    z = z if rotation is None else np.matmul(rotation, z)
+
+    for i in range(0, nx):
+        sm += (z[i]*z[i] - 10.0*np.cos(2.0*np.pi*z[i]) + 10.0)
     return sm
 
 def levy(x):
-    # do first term and first summation together
-    w = 1 + (x[0] - 1) * 0.25
-    t1 = np.sin(np.pi*w)
-    t1 = t1*t1
-    t = w - 1
-    t = t*t
-    sn = np.sin(np.pi*w + 1)
-    sn = sn*sn
-    t1 += t * (1 + 10 * sn)
+    # Note: the function definitions state to scale by 5.12/100, but the code
+    # doesn't do this, and the example graph in the definitions correspond to
+    # the version without scaling
+    # x = 0.0512 * x
+    nx = len(x)
+    w = 1.0 + 0.25*(x - 1.0)
 
-    # rest of summation
-    t2 = 0
-    for i in range(1, len(x) - 1):
-        w = 1 + (x[i] - 1) * 0.25
-        t = w - 1
-        t = t*t
-        sn = np.sin(np.pi*w + 1)
-        sn = sn*sn
-        t2 += t * (1 + 10 * sn)
+    term1 = (np.sin(np.pi*w[0]))**2
+    term3 = ((w[nx-1] - 1)**2) * (1 + ((np.sin(2*np.pi*w[nx-1]))**2))
 
-    # last term
-    w = 1 + (x[-1] - 1) * 0.25
-    t = w - 1
-    t = t*t
-    sn = np.sin(2*np.pi*w)
-    sn = sn*sn
-    t3 = t * (1 + sn)
-    return t1 + t2 + t3
+    sm = 0.0
+
+    for i in range(0, nx-1):
+        wi = w[i]
+        newv = ((wi-1)**2) * (1 + 10*((np.sin(np.pi*wi+1))**2))
+        sm += newv
+
+    return term1 + sm + term3
 
 def modified_schwefel(x):
     nx = len(x)
+    x = 10.0 * x # scale to search range
     sm = 0.0
     for i in range(0, nx):
         z = x[i] + 420.9687462275036
@@ -248,13 +267,19 @@ def expanded_griewanks_plus_rosenbrock(x):
     return sm
 
 def schaffers_f7(x):
-    nxm = len(x)-1
+    nx = len(x)
+    # Note: the function definitions state to scale by 0.5/100, but the code
+    # doesn't do this, and the example graph in the definitions correspond to
+    # the version without scaling
+    # x = 0.005 * x
     sm = 0.0
-    for i in range(0, nxm):
-        s = (x[i]*x[i] + x[i+1]*x[i+1])**0.5
-        sm += s**0.5 * (np.sin(50*s**0.2) + 1)
-    sm = (1/nxm)*sm
-    sm = sm*sm
+    for i in range(0, nx-1):
+        si = (x[i]*x[i] + x[i+1]*x[i+1])**0.5
+        tmp = np.sin(50.0*(si**0.2))
+        # Note: the original code has this error here (tmp shouldn't be squared)
+        # that I'm keeping for consistency.
+        sm += (si**0.5) * (tmp*tmp + 1)
+    sm = (sm*sm) / (nx*nx - 2*nx + 1)
     return sm
 
 all_functions = [
@@ -265,7 +290,7 @@ all_functions = [
     rastrigin,
     expanded_schaffers_f6,
     lunacek_bi_rastrigin,
-    non_cont_rotated_rastrigin,
+    non_cont_rastrigin,
     levy,
     modified_schwefel,
     high_conditioned_elliptic,
