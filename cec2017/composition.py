@@ -235,7 +235,9 @@ def f26(x, rotations=None, shifts=None):
     N = 5
     funcs = [basic.expanded_schaffers_f6, basic.modified_schwefel, basic.griewank, basic.rosenbrock, basic.rastrigin]
     sigmas = np.array([10.0, 20.0, 20.0, 30.0, 40.0])
-    lambdas = np.array([1.0e-26, 10.0, 1.0e-6, 10.0, 5.0e-4])
+    # Note: the lambdas specified in the problem definitions (below) differ from what is used in the code
+    #lambdas = np.array([1.0e-26, 10.0, 1.0e-6, 10.0, 5.0e-4])
+    lambdas = np.array([5.0e-4, 1.0, 10.0, 1.0, 10.0])
     biases = np.array([0.0, 100.0, 200.0, 300.0, 400.0])
     vals = np.zeros(N)
     w = np.zeros(N)

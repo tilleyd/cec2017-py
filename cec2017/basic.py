@@ -172,7 +172,7 @@ def high_conditioned_elliptic(x):
     return sm
 
 def discus(x):
-    sm = 10e+6*x[0]*x[0]
+    sm = 1e+6*x[0]*x[0]
     for i in range(1, len(x)):
         sm += x[i]*x[i]
     return sm
@@ -206,6 +206,7 @@ def weierstrass(x):
     return sm - len(x)*ksm
 
 def griewank(x):
+    x = 6.0 * x
     factor = 1/4000
     cs = np.cos(x / np.arange(start=1, stop=len(x)+1))
     sm = 0.0
@@ -264,7 +265,7 @@ def expanded_griewanks_plus_rosenbrock(x):
         tmp2 = x[-1] - 1
         temp = 100.0*tmp1*tmp1 + tmp2*tmp2
         sm += (temp*temp)/4000.0 - np.cos(temp) + 1.0
-        return sm
+    return sm
 
 def schaffers_f7(x):
     nx = len(x)
