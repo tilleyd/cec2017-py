@@ -4,6 +4,7 @@
 
 from . import basic
 from . import transforms
+from . import hybrid
 
 import numpy as np
 
@@ -353,11 +354,38 @@ def f29(x, rotations=None, shifts=None, shuffles=None):
             used.
         shifts (array): Optional shift vectors (NxD). If None (default), the
             official vectors from the benchmark suite will be used.
-        shuffle (array): Optional shuffle vectors (NxD). If None (default), the
+        shuffles (array): Optional shuffle vectors (NxD). If None (default), the
             official permutation vectors from the benchmark suite will be used.
     """
-    # TODO
-    return 0.0
+    nx = len(x)
+    if rotations is None:
+        rotations = transforms.rotations_cf[nx][8]
+    if shifts is None:
+        shifts = transforms.shifts_cf[8]
+    if shuffles is None:
+        shuffles = transforms.shuffles_cf[nx][0]
+
+    N = 3
+    funcs = [hybrid.f15, hybrid.f16, hybrid.f17]
+    sigmas = np.array([10.0, 30.0, 50.0])
+    biases = np.array([0.0, 100.0, 200.0])
+    offsets = np.array([1500, 1600, 1700]) # subtract F* added at the end of the functions
+    vals = np.zeros(N)
+    w = np.zeros(N)
+    w_sm = 0.0
+    for i in range(0, N):
+        x_shifted = x-shifts[i][:nx]
+        vals[i] = funcs[i](x, rotation=rotations[i], shift=shifts[i][:nx], shuffle=shuffles[i])
+        vals[i] -= offsets[i]
+        w[i] = _calc_w(x_shifted, sigmas[i])
+        w_sm += w[i]
+
+    if (w_sm != 0.0):
+        w /= w_sm
+    else:
+        w = np.full(N, 1/N)
+
+    return np.sum(w * (vals + biases)) + 2900
 
 def f30(x, rotations=None, shifts=None, shuffles=None):
     """
@@ -370,8 +398,35 @@ def f30(x, rotations=None, shifts=None, shuffles=None):
             used.
         shifts (array): Optional shift vectors (NxD). If None (default), the
             official vectors from the benchmark suite will be used.
-        shuffle (array): Optional shuffle vectors (NxD). If None (default), the
+        shuffles (array): Optional shuffle vectors (NxD). If None (default), the
             official permutation vectors from the benchmark suite will be used.
     """
-    # TODO
-    return 0.0
+    nx = len(x)
+    if rotations is None:
+        rotations = transforms.rotations_cf[nx][9]
+    if shifts is None:
+        shifts = transforms.shifts_cf[9]
+    if shuffles is None:
+        shuffles = transforms.shuffles_cf[nx][1]
+
+    N = 3
+    funcs = [hybrid.f15, hybrid.f18, hybrid.f19]
+    sigmas = np.array([10.0, 30.0, 50.0])
+    biases = np.array([0.0, 100.0, 200.0])
+    offsets = np.array([1500, 1800, 1900]) # subtract F* added at the end of the functions
+    vals = np.zeros(N)
+    w = np.zeros(N)
+    w_sm = 0.0
+    for i in range(0, N):
+        x_shifted = x-shifts[i][:nx]
+        vals[i] = funcs[i](x, rotation=rotations[i], shift=shifts[i][:nx], shuffle=shuffles[i])
+        vals[i] -= offsets[i]
+        w[i] = _calc_w(x_shifted, sigmas[i])
+        w_sm += w[i]
+
+    if (w_sm != 0.0):
+        w /= w_sm
+    else:
+        w = np.full(N, 1/N)
+
+    return np.sum(w * (vals + biases)) + 3000

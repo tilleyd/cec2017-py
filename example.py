@@ -19,16 +19,16 @@ for f in functions.all_functions:
     y = f(x)
     print('%s( %.1f, %.1f, ... ) = %.2f' %(f.__name__, x[0], x[1], y))
 
-# or all hybrid functions (or basic, simple or compound functions...)
-import cec2017.simple as simple # cec2017.basic cec2017.hybrid cec2017.compound
+# or all hybrid functions (or basic, simple or composite functions...)
+import cec2017.simple as simple # cec2017.basic cec2017.hybrid cec2017.composite
 for f in simple.all_functions: # f1 to f10
     x = np.random.uniform(low=-100, high=100, size=D)
     y = f(x)
     print('%s( %.1f, %.1f, ... ) = %.2f' %(f.__name__, x[0], x[1], y))
 
-# make a surface plot of f8
+# make a surface plot of f27
 import cec2017.utils as utils
-utils.surface_plot(functions.f8, points=120)
+utils.surface_plot(functions.f27, points=120)
 # or of f14 (not defined for D=2, so specify D=10)
 utils.surface_plot(functions.f14, points=120, dimension=10)
 # or even a base function like Ackley

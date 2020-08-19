@@ -14,8 +14,6 @@ As per the problem definitions, functions are defined for 10, 30, 50 and 100 dim
 
 ## Features
 
-> **Note**: Compound functions (`f21` to `f30`) are not yet implemented, but coming soon.
-
 - Native implementation of all CEC 2017 single objective functions
 - Pre-defined rotations, shifts and shuffles for 2, 10, 20, 30, 50 and 100 dimensions
 - Allows custom rotations, shifts and shuffles
