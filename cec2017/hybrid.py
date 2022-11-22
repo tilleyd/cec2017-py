@@ -35,6 +35,7 @@ def _shuffle_and_partition(x, shuffle, partitions):
     parts.append(xs[end:])
     return parts
 
+
 def f11(x, rotation=None, shift=None, shuffle=None):
     """
     Hybrid Function 1 (N=3)
@@ -48,7 +49,9 @@ def f11(x, rotation=None, shift=None, shuffle=None):
         shuffle (array): Optionbal shuffle vector. If None (default), the
             official permutation vector from the benchmark suite will be used.
     """
-    nx = len(x)
+    x = np.array(x)
+    nx = x.shape[1]
+
     if rotation is None:
         rotation = transforms.rotations[nx][10]
     if shift is None:
@@ -56,13 +59,14 @@ def f11(x, rotation=None, shift=None, shuffle=None):
     if shuffle is None:
         shuffle = transforms.shuffles[nx][0]
 
-    x_transformed = np.matmul(rotation, x - shift)
-    x_parts = _shuffle_and_partition(x_transformed, shuffle, [0.2, 0.4, 0.4])
+    x_transformed = transforms.shift_rotate(x, shift, rotation)
+    x_parts = transforms.shuffle_and_partition(x_transformed, shuffle, [0.2, 0.4, 0.4])
 
     y = basic.zakharov(x_parts[0])
     y += basic.rosenbrock(x_parts[1])
     y += basic.rastrigin(x_parts[2])
     return y + 1100.0
+
 
 def f12(x, rotation=None, shift=None, shuffle=None):
     """
@@ -77,7 +81,9 @@ def f12(x, rotation=None, shift=None, shuffle=None):
         shuffle (array): Optionbal shuffle vector. If None (default), the
             official permutation vector from the benchmark suite will be used.
     """
-    nx = len(x)
+    x = np.array(x)
+    nx = x.shape[1]
+
     if rotation is None:
         rotation = transforms.rotations[nx][11]
     if shift is None:
@@ -85,13 +91,14 @@ def f12(x, rotation=None, shift=None, shuffle=None):
     if shuffle is None:
         shuffle = transforms.shuffles[nx][1]
 
-    x_transformed = np.matmul(rotation, x - shift)
-    x_parts = _shuffle_and_partition(x_transformed, shuffle, [0.3, 0.3, 0.4])
+    x_transformed = transforms.shift_rotate(x, shift, rotation)
+    x_parts = transforms.shuffle_and_partition(x_transformed, shuffle, [0.3, 0.3, 0.4])
 
     y = basic.high_conditioned_elliptic(x_parts[0])
     y += basic.modified_schwefel(x_parts[1])
     y += basic.bent_cigar(x_parts[2])
     return y + 1200.0
+
 
 def f13(x, rotation=None, shift=None, shuffle=None):
     """
@@ -106,7 +113,9 @@ def f13(x, rotation=None, shift=None, shuffle=None):
         shuffle (array): Optionbal shuffle vector. If None (default), the
             official permutation vector from the benchmark suite will be used.
     """
-    nx = len(x)
+    x = np.array(x)
+    nx = x.shape[1]
+
     if rotation is None:
         rotation = transforms.rotations[nx][12]
     if shift is None:
@@ -114,13 +123,14 @@ def f13(x, rotation=None, shift=None, shuffle=None):
     if shuffle is None:
         shuffle = transforms.shuffles[nx][2]
 
-    x_transformed = np.matmul(rotation, x - shift)
-    x_parts = _shuffle_and_partition(x_transformed, shuffle, [0.3, 0.3, 0.4])
+    x_transformed = transforms.shift_rotate(x, shift, rotation)
+    x_parts = transforms.shuffle_and_partition(x_transformed, shuffle, [0.3, 0.3, 0.4])
 
     y = basic.bent_cigar(x_parts[0])
     y += basic.rosenbrock(x_parts[1])
     y += basic.lunacek_bi_rastrigin(x_parts[2])
     return y + 1300.0
+
 
 def f14(x, rotation=None, shift=None, shuffle=None):
     """
@@ -135,7 +145,9 @@ def f14(x, rotation=None, shift=None, shuffle=None):
         shuffle (array): Optionbal shuffle vector. If None (default), the
             official permutation vector from the benchmark suite will be used.
     """
-    nx = len(x)
+    x = np.array(x)
+    nx = x.shape[1]
+
     if rotation is None:
         rotation = transforms.rotations[nx][13]
     if shift is None:
@@ -143,14 +155,15 @@ def f14(x, rotation=None, shift=None, shuffle=None):
     if shuffle is None:
         shuffle = transforms.shuffles[nx][3]
 
-    x_transformed = np.matmul(rotation, x - shift)
-    x_parts = _shuffle_and_partition(x_transformed, shuffle, [0.2, 0.2, 0.2, 0.4])
+    x_transformed = transforms.shift_rotate(x, shift, rotation)
+    x_parts = transforms.shuffle_and_partition(x_transformed, shuffle, [0.2, 0.2, 0.2, 0.4])
 
     y = basic.high_conditioned_elliptic(x_parts[0])
     y += basic.ackley(x_parts[1])
     y += basic.schaffers_f7(x_parts[2])
     y += basic.rastrigin(x_parts[3])
     return y + 1400.0
+
 
 def f15(x, rotation=None, shift=None, shuffle=None):
     """
@@ -165,7 +178,9 @@ def f15(x, rotation=None, shift=None, shuffle=None):
         shuffle (array): Optionbal shuffle vector. If None (default), the
             official permutation vector from the benchmark suite will be used.
     """
-    nx = len(x)
+    x = np.array(x)
+    nx = x.shape[1]
+
     if rotation is None:
         rotation = transforms.rotations[nx][14]
     if shift is None:
@@ -173,14 +188,15 @@ def f15(x, rotation=None, shift=None, shuffle=None):
     if shuffle is None:
         shuffle = transforms.shuffles[nx][4]
 
-    x_transformed = np.matmul(rotation, x - shift)
-    x_parts = _shuffle_and_partition(x_transformed, shuffle, [0.2, 0.2, 0.3, 0.3])
+    x_transformed = transforms.shift_rotate(x, shift, rotation)
+    x_parts = transforms.shuffle_and_partition(x_transformed, shuffle, [0.2, 0.2, 0.3, 0.3])
 
     y = basic.bent_cigar(x_parts[0])
     y += basic.h_g_bat(x_parts[1])
     y += basic.rastrigin(x_parts[2])
     y += basic.rosenbrock(x_parts[3])
     return y + 1500.0
+
 
 def f16(x, rotation=None, shift=None, shuffle=None):
     """
@@ -195,7 +211,9 @@ def f16(x, rotation=None, shift=None, shuffle=None):
         shuffle (array): Optionbal shuffle vector. If None (default), the
             official permutation vector from the benchmark suite will be used.
     """
-    nx = len(x)
+    x = np.array(x)
+    nx = x.shape[1]
+
     if rotation is None:
         rotation = transforms.rotations[nx][15]
     if shift is None:
@@ -203,14 +221,15 @@ def f16(x, rotation=None, shift=None, shuffle=None):
     if shuffle is None:
         shuffle = transforms.shuffles[nx][5]
 
-    x_transformed = np.matmul(rotation, x - shift)
-    x_parts = _shuffle_and_partition(x_transformed, shuffle, [0.2, 0.2, 0.3, 0.3])
+    x_transformed = transforms.shift_rotate(x, shift, rotation)
+    x_parts = transforms.shuffle_and_partition(x_transformed, shuffle, [0.2, 0.2, 0.3, 0.3])
 
     y = basic.expanded_schaffers_f6(x_parts[0])
     y += basic.h_g_bat(x_parts[1])
     y += basic.rosenbrock(x_parts[2])
     y += basic.modified_schwefel(x_parts[3])
     return y + 1600.0
+
 
 def f17(x, rotation=None, shift=None, shuffle=None):
     """
@@ -225,7 +244,9 @@ def f17(x, rotation=None, shift=None, shuffle=None):
         shuffle (array): Optionbal shuffle vector. If None (default), the
             official permutation vector from the benchmark suite will be used.
     """
-    nx = len(x)
+    x = np.array(x)
+    nx = x.shape[1]
+
     if rotation is None:
         rotation = transforms.rotations[nx][16]
     if shift is None:
@@ -233,8 +254,8 @@ def f17(x, rotation=None, shift=None, shuffle=None):
     if shuffle is None:
         shuffle = transforms.shuffles[nx][6]
 
-    x_transformed = np.matmul(rotation, x - shift)
-    x_parts = _shuffle_and_partition(x_transformed, shuffle, [0.1, 0.2, 0.2, 0.2, 0.3])
+    x_transformed = transforms.shift_rotate(x, shift, rotation)
+    x_parts = transforms.shuffle_and_partition(x_transformed, shuffle, [0.1, 0.2, 0.2, 0.2, 0.3])
 
     y = basic.katsuura(x_parts[0])
     y += basic.ackley(x_parts[1])
@@ -242,6 +263,7 @@ def f17(x, rotation=None, shift=None, shuffle=None):
     y += basic.modified_schwefel(x_parts[3])
     y += basic.rastrigin(x_parts[4])
     return y + 1700.0
+
 
 def f18(x, rotation=None, shift=None, shuffle=None):
     """
@@ -256,7 +278,9 @@ def f18(x, rotation=None, shift=None, shuffle=None):
         shuffle (array): Optionbal shuffle vector. If None (default), the
             official permutation vector from the benchmark suite will be used.
     """
-    nx = len(x)
+    x = np.array(x)
+    nx = x.shape[1]
+
     if rotation is None:
         rotation = transforms.rotations[nx][17]
     if shift is None:
@@ -264,8 +288,8 @@ def f18(x, rotation=None, shift=None, shuffle=None):
     if shuffle is None:
         shuffle = transforms.shuffles[nx][7]
 
-    x_transformed = np.matmul(rotation, x - shift)
-    x_parts = _shuffle_and_partition(x_transformed, shuffle, [0.2, 0.2, 0.2, 0.2, 0.2])
+    x_transformed = transforms.shift_rotate(x, shift, rotation)
+    x_parts = transforms.shuffle_and_partition(x_transformed, shuffle, [0.2, 0.2, 0.2, 0.2, 0.2])
 
     y = basic.high_conditioned_elliptic(x_parts[0])
     y += basic.ackley(x_parts[1])
@@ -273,6 +297,7 @@ def f18(x, rotation=None, shift=None, shuffle=None):
     y += basic.h_g_bat(x_parts[3])
     y += basic.discus(x_parts[4])
     return y + 1800.0
+
 
 def f19(x, rotation=None, shift=None, shuffle=None):
     """
@@ -287,7 +312,9 @@ def f19(x, rotation=None, shift=None, shuffle=None):
         shuffle (array): Optionbal shuffle vector. If None (default), the
             official permutation vector from the benchmark suite will be used.
     """
-    nx = len(x)
+    x = np.array(x)
+    nx = x.shape[1]
+
     if rotation is None:
         rotation = transforms.rotations[nx][18]
     if shift is None:
@@ -295,8 +322,8 @@ def f19(x, rotation=None, shift=None, shuffle=None):
     if shuffle is None:
         shuffle = transforms.shuffles[nx][8]
 
-    x_transformed = np.matmul(rotation, x - shift)
-    x_parts = _shuffle_and_partition(x_transformed, shuffle, [0.2, 0.2, 0.2, 0.2, 0.2])
+    x_transformed = transforms.shift_rotate(x, shift, rotation)
+    x_parts = transforms.shuffle_and_partition(x_transformed, shuffle, [0.2, 0.2, 0.2, 0.2, 0.2])
 
     y = basic.bent_cigar(x_parts[0])
     y += basic.rastrigin(x_parts[1])
@@ -304,6 +331,7 @@ def f19(x, rotation=None, shift=None, shuffle=None):
     y += basic.weierstrass(x_parts[3])
     y += basic.expanded_schaffers_f6(x_parts[4])
     return y + 1900.0
+
 
 def f20(x, rotation=None, shift=None, shuffle=None):
     """
@@ -318,7 +346,9 @@ def f20(x, rotation=None, shift=None, shuffle=None):
         shuffle (array): Optionbal shuffle vector. If None (default), the
             official permutation vector from the benchmark suite will be used.
     """
-    nx = len(x)
+    x = np.array(x)
+    nx = x.shape[1]
+
     if rotation is None:
         rotation = transforms.rotations[nx][19]
     if shift is None:
@@ -326,8 +356,8 @@ def f20(x, rotation=None, shift=None, shuffle=None):
     if shuffle is None:
         shuffle = transforms.shuffles[nx][9]
 
-    x_transformed = np.matmul(rotation, x - shift)
-    x_parts = _shuffle_and_partition(x_transformed, shuffle, [0.1, 0.1, 0.2, 0.2, 0.2, 0.2])
+    x_transformed = transforms.shift_rotate(x, shift, rotation)
+    x_parts = transforms.shuffle_and_partition(x_transformed, shuffle, [0.1, 0.1, 0.2, 0.2, 0.2, 0.2])
 
     y = basic.happy_cat(x_parts[0])
     y += basic.katsuura(x_parts[1])
@@ -336,6 +366,7 @@ def f20(x, rotation=None, shift=None, shuffle=None):
     y += basic.modified_schwefel(x_parts[4])
     y += basic.schaffers_f7(x_parts[5])
     return y + 2000.0
+
 
 all_functions = [
     f11,
