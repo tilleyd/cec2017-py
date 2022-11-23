@@ -58,3 +58,53 @@ shuffles_cf = {
     50: _pkl['shuffle_cf_D50'],
     100: _pkl['shuffle_cf_D100']
 }
+
+
+def shift_rotate(x: np.ndarray, shift: np.ndarray, rotation: np.ndarray) -> np.ndarray:
+    """
+    Apply the shift and rotation to vector x along its second axis.
+
+    Args:
+        x (np.ndarray):
+            (M, N) array of M N-dimensional vectors.
+        shift (np.ndarray):
+            Array of size N providing the shift.
+        rotation (np.ndarray):
+            (N, N) array providing the rotation matrix.
+
+    Returns:
+        (M, N) array of M shifted and rotated N-dimensional vectors.
+    """
+    shifted = np.expand_dims(x - np.expand_dims(shift, 0), -1)
+    x_transformed = np.matmul(np.expand_dims(rotation, 0), shifted)
+    return x_transformed[:, :, 0]
+
+
+def shuffle_and_partition(x, shuffle, partitions):
+    """
+    First applies the given permutation, then splits x into partitions given
+    the percentages.
+
+    Args:
+        x (array): Input vector.
+        shuffle (array): Shuffle vector.
+        partitions (list): List of percentages. Assumed to add up to 1.0.
+
+    Returns:
+        (list of arrays): The partitions of x after shuffling.
+    """
+    nx = x.shape[1]
+
+    # shuffle
+    xs = np.zeros_like(x)
+    for i in range(0, nx):
+        xs[:, i] = x[:, shuffle[i]]
+    # and partition
+    parts = []
+    start, end = 0, 0
+    for p in partitions[:-1]:
+        end = start + int(np.ceil(p * nx))
+        parts.append(xs[:, start:end])
+        start = end
+    parts.append(xs[:, end:])
+    return parts

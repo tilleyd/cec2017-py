@@ -1,30 +1,45 @@
 #!/usr/bin/python3
 
 import numpy as np
-# Accepted dimensions are 2, 10, 20, 30, 50 or 100
-# (f11 - f20 and f29 - f30 not defined for D = 2)
-D = 10
 
-# evaluate a specific function a few times
+# evaluate a specific function a few times with one sample
 import cec2017.functions as functions
+
 f = functions.f5
+dimension = 30
 for i in range(0, 10):
-    x = np.random.uniform(low=-100, high=100, size=D)
+    x = np.random.uniform(low=-100, high=100, size=dimension)
+    y = f([x])[0]
+    print(f"f5({x[0]:.2f}, {x[1]:.2f}, ...) = {y:.2f}")
+
+# or with a population (i.e. multiple samples)
+f = functions.f3
+samples = 3
+dimension = 30
+for i in range(0, 10):
+    x = np.random.uniform(low=-100, high=100, size=(samples, dimension))
     y = f(x)
-    print('%s( %.1f, %.1f, ... ) = %.2f' %(f.__name__, x[0], x[1], y))
+    for i in range(samples):
+        print(f"f5({x[i, 0]:.2f}, {x[i, 1]:.2f}, ...) = {y[i]:.2f}")
 
 # or evaluate each function once
+samples = 3
+dimension = 50
 for f in functions.all_functions:
-    x = np.random.uniform(low=-100, high=100, size=D)
-    y = f(x)
-    print('%s( %.1f, %.1f, ... ) = %.2f' %(f.__name__, x[0], x[1], y))
+    x = np.random.uniform(-100, 100, size=(samples, dimension))
+    val = f(x)
+    for i in range(samples):
+        print(f"{f.__name__}({x[i, 0]:.2f}, {x[i, 1]:.2f}, ...) = {y[i]:.2f}")
 
 # or all hybrid functions (or basic, simple or composite functions...)
 import cec2017.simple as simple # cec2017.basic cec2017.hybrid cec2017.composite
+samples = 3
+dimension = 50
 for f in simple.all_functions: # f1 to f10
-    x = np.random.uniform(low=-100, high=100, size=D)
+    x = np.random.uniform(low=-100, high=100, size=(samples, dimension))
     y = f(x)
-    print('%s( %.1f, %.1f, ... ) = %.2f' %(f.__name__, x[0], x[1], y))
+    for i in range(samples):
+        print(f"{f.__name__}({x[i, 0]:.2f}, {x[i, 1]:.2f}, ...) = {y[i]:.2f}")
 
 # make a surface plot of f27
 import cec2017.utils as utils

@@ -24,16 +24,19 @@ def surface_plot(function, domain=(-100,100), points=30, dimension=2, ax=None):
     # create points^2 tuples of (x,y) and populate z
     xys = np.linspace(domain[0], domain[1], points)
     xys = np.transpose([np.tile(xys, len(xys)), np.repeat(xys, len(xys))])
-    zs = np.zeros(points*points)
+    # zs = np.zeros(points*points)
 
     if dimension > 2:
         # concatenate remaining zeros
-        tail = np.zeros(dimension - 2)
-        for i in range(0, xys.shape[0]):
-            zs[i] = function(np.concatenate([xys[i], tail]))
+        tail = np.zeros((xys.shape[0], dimension - 2))
+        x = np.concatenate([xys, tail], axis=1)
+        zs = function(x)
+        # for i in range(0, xys.shape[0]):
+        #     zs[i] = function(np.concatenate([xys[i], tail]))
     else:
-        for i in range(0, xys.shape[0]):
-            zs[i] = function(xys[i])
+        zs = function(xys)
+        # for i in range(0, xys.shape[0]):
+        #     zs[i] = function(xys[i])
 
     # create the plot
     ax_in = ax
