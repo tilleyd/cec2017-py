@@ -71,6 +71,7 @@ def f21(x, rotations=None, shifts=None):
         shifts (array): Optional shift vectors (NxD). If None (default), the
             official vectors from the benchmark suite will be used.
     """
+    x = np.array(x)
     nx = x.shape[1]
 
     if rotations is None:
@@ -353,3 +354,17 @@ def f30(x, rotations=None, shifts=None, shuffles=None):
     biases = np.array([0.0, 100.0, 200.0])
     offsets = np.array([1500, 1800, 1900]) # subtract F* added at the end of the functions
     return _compose_hybrids(x, rotations, shifts, shuffles, funcs, sigmas, offsets, biases) + 3000
+
+
+all_functions = [
+    f21,
+    f22,
+    f23,
+    f24,
+    f25,
+    f26,
+    f27,
+    f28,
+    f29,
+    f30,
+]
