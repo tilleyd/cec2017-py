@@ -13,7 +13,7 @@ def _calc_w(x, sigma):
     nx = x.shape[1]
     w = np.sum(x*x, axis=1)
     nzmask = w != 0
-    w[nzmask] = ((1.0/w)**0.5) * np.exp(-w / (2.0*nx*sigma*sigma))[nzmask]
+    w[nzmask] = ((1.0/w)**0.5)[nzmask] * np.exp(-w / (2.0*nx*sigma*sigma))[nzmask]
     w[~nzmask] = float('inf')
     return w
 
