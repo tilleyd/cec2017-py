@@ -1,7 +1,5 @@
 # CEC 2017 Python
 
-> **⚠ 23 Nov 2022**: Breaking changes were made to all function signatures. See the changelog for details.
-
 Python 3 module containing a native implementation of the CEC 2017 benchmark functions (single objective optimization). The implementation is adapted from Awad's original C implementation, available on [Suganthan's GitHub repo](https://github.com/P-N-Suganthan/CEC2017-BoundContrained), along with the problem definitions [1].
 
 Although there are wrappers for the C code, this module is easier to use, natively supports numpy arrays and is (_much_) more readable than the C implementation.
