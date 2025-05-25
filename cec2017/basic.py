@@ -233,7 +233,7 @@ def katsuura(x: np.ndarray) -> np.ndarray:
     nx = x.shape[1]
     pw = 10/(nx**1.2)
     prd = 1.0
-    tj = 2**np.arange(start=1, stop=33, step=1)
+    tj = 2**np.arange(start=1, stop=33, step=1, dtype=np.int64)
     tj = np.expand_dims(np.expand_dims(tj, 0), 0)
     tjx = tj*np.expand_dims(x, -1)  # shape (M, nx, 32)
     t = np.abs(tjx - np.round(tjx)) / tj
